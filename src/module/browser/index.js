@@ -4,7 +4,7 @@ import { sleep } from "./general.js";
 import { checkStat } from "./turnstile.js";
 import logger from "../logger.js";
 import puppeteer from "puppeteer-extra";
-import StealthPlugin from "puppeteer-extra-plugin-stealth";
+
 
 export const connect = (options) => {
   return new Promise(async (resolve, reject) => {
@@ -20,7 +20,6 @@ export const connect = (options) => {
         customConfig: options.customConfig,
       });
 
-    puppeteer.use(StealthPlugin());
     const browser = await puppeteer.connect({
       targetFilter: (target) =>
         targetFilter(
