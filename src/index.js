@@ -6,6 +6,8 @@ import { ConnectDTO } from "./module/browser/dto.js";
 
 let page;
 let browser;
+const TOKEN_NUMBER = 1;
+const TTL = "1d";
 
 async function browserConnection(link) {
   logger.info("Start of the parser...");
@@ -81,7 +83,7 @@ async function startParsing() {
             const element = document.querySelectorAll(
               'a[title="Open in block explorer"]'
             )[1];
-            return element.getAttribute("href").split("token/")[1] || null;
+            return element.getAttribute("href").split("token/")[TOKEN_NUMBER] || null;
           });
           task.push(
             typeof resultAddresses === "string"
@@ -99,7 +101,7 @@ async function startParsing() {
       await RedisManager.setList(
         Object.entries(objLinks).find(([_, value]) => value === key)?.[0],
         [...new Set(task)],
-        "1d"
+        TTL
       );
       logger.info(`End of parse link: ${link}`);
       const response = await RedisManager.select(
